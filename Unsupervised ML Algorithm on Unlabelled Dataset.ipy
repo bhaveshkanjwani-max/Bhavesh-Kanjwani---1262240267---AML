@@ -3,23 +3,13 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 
-# -----------------------------
-# Load Dataset
-# -----------------------------
 data = pd.read_csv("Mall_Customers.csv")
 
 # Display first 5 rows
 print(data.head())
 
-# -----------------------------
-# Select Features
-# -----------------------------
-# Using Annual Income and Spending Score
 X = data.iloc[:, [3, 4]].values
 
-# -----------------------------
-# Find Optimal Number of Clusters
-# -----------------------------
 wcss = []
 
 for i in range(1, 11):
@@ -32,7 +22,6 @@ for i in range(1, 11):
     kmeans.fit(X)
     wcss.append(kmeans.inertia_)
 
-# Plot Elbow Method
 plt.figure(figsize=(6,4))
 plt.plot(range(1, 11), wcss, marker='o')
 plt.title("Elbow Method")
@@ -40,9 +29,6 @@ plt.xlabel("Number of Clusters")
 plt.ylabel("WCSS")
 plt.show()
 
-# -----------------------------
-# Apply K-Means
-# -----------------------------
 kmeans = KMeans(
     n_clusters=5,
     init='k-means++',
@@ -52,9 +38,6 @@ kmeans = KMeans(
 
 y_kmeans = kmeans.fit_predict(X)
 
-# -----------------------------
-# Visualize Clusters
-# -----------------------------
 plt.figure(figsize=(8,6))
 
 plt.scatter(X[y_kmeans == 0, 0], X[y_kmeans == 0, 1], label="Cluster 1")
