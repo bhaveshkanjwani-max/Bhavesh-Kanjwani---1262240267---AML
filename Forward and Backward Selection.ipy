@@ -5,18 +5,11 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
-# -----------------------------
-# Read CSV
-# -----------------------------
 wine = pd.read_csv("Wine dataset.csv")
 
 # Replace "target" with your actual target column name
 X = wine.drop("target", axis=1)
 y = wine["target"]
-
-# -----------------------------
-# Split Dataset
-# -----------------------------
 X_train, X_test, y_train, y_test = train_test_split(
     X,
     y,
@@ -24,9 +17,6 @@ X_train, X_test, y_train, y_test = train_test_split(
     random_state=42
 )
 
-# -----------------------------
-# Scale Features
-# -----------------------------
 scaler = StandardScaler()
 
 X_train = pd.DataFrame(
@@ -39,14 +29,8 @@ X_test = pd.DataFrame(
     columns=X.columns
 )
 
-# -----------------------------
-# Logistic Regression Model
-# -----------------------------
 model = LogisticRegression(max_iter=1000)
 
-# -----------------------------
-# Forward Feature Selection
-# -----------------------------
 forward_selector = SequentialFeatureSelector(
     estimator=model,
     n_features_to_select=5,
@@ -64,9 +48,6 @@ print("Forward Selected Features:")
 for feature in forward_features:
     print(feature)
 
-# -----------------------------
-# Backward Feature Selection
-# -----------------------------
 backward_selector = SequentialFeatureSelector(
     estimator=model,
     n_features_to_select=5,
@@ -84,9 +65,6 @@ print("\nBackward Selected Features:")
 for feature in backward_features:
     print(feature)
 
-# -----------------------------
-# Train and Evaluate - Forward
-# -----------------------------
 X_train_forward = X_train[forward_features]
 X_test_forward = X_test[forward_features]
 
@@ -95,9 +73,6 @@ y_pred_forward = model.predict(X_test_forward)
 
 forward_accuracy = accuracy_score(y_test, y_pred_forward)
 
-# -----------------------------
-# Train and Evaluate - Backward
-# -----------------------------
 X_train_backward = X_train[backward_features]
 X_test_backward = X_test[backward_features]
 
@@ -106,9 +81,6 @@ y_pred_backward = model.predict(X_test_backward)
 
 backward_accuracy = accuracy_score(y_test, y_pred_backward)
 
-# -----------------------------
-# Results
-# -----------------------------
 print("\n==============================")
 print(f"Forward Selection Accuracy : {forward_accuracy * 100:.2f}%")
 print(f"Backward Selection Accuracy: {backward_accuracy * 100:.2f}%")
